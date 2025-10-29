@@ -42,8 +42,31 @@ class App {
   private async init() {
     // Check WebGPU support
     if (!navigator.gpu) {
-      this.status.textContent = 'エラー: WebGPU未対応のブラウザです';
+      const userAgent = navigator.userAgent;
+      const isHttps = location.protocol === 'https:' || location.hostname === 'localhost';
+      const protocol = location.protocol;
+
+      let errorMsg = 'エラー: WebGPU未対応';
+
+      if (!isHttps) {
+        errorMsg += ' (HTTPSが必要です)';
+      } else if (userAgent.includes('Chrome')) {
+        const match = userAgent.match(/Chrome\/(\d+)/);
+        const version = match ? parseInt(match[1]) : 0;
+        if (version < 113) {
+          errorMsg += ` (Chrome ${version} < 113)`;
+        } else {
+          errorMsg += ' (chrome://flags で WebGPU を有効化してください)';
+        }
+      } else if (userAgent.includes('Safari') && !userAgent.includes('Chrome')) {
+        errorMsg += ' (Safari Technology Preview が必要です)';
+      }
+
+      this.status.textContent = errorMsg;
       this.status.style.color = '#e74c3c';
+
+      // Show detailed info in panel
+      this.mainPanelHeader.textContent = `WebGPU未対応: ${protocol}//${location.host}`;
       return;
     }
 
