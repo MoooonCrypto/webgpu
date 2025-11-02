@@ -3,49 +3,52 @@
 import { useState } from 'react'
 import Image from 'next/image'
 
-// サンプルデータ（実際は外部APIやCMSから取得）
+// R2 Cloudflare Storage URL
+const R2_URL = 'https://pub-38a5803166a44a668002f313b530f97f.r2.dev'
+
+// 画像データ（実際の画像URLを使用）
 const sampleImages = [
   {
     id: 1,
-    title: 'Sample Image 1',
-    category: 'Swimwear',
-    thumbnail: 'https://via.placeholder.com/400x400/ff69b4/ffffff?text=18+',
-    full: 'https://via.placeholder.com/1200x1200/ff69b4/ffffff?text=18+',
+    title: 'Test Image 1',
+    category: 'Gallery',
+    thumbnail: `${R2_URL}/test_001.png`,
+    full: `${R2_URL}/test_001.png`,
   },
   {
     id: 2,
-    title: 'Sample Image 2',
-    category: 'Lingerie',
-    thumbnail: 'https://via.placeholder.com/400x400/ff1493/ffffff?text=18+',
-    full: 'https://via.placeholder.com/1200x1200/ff1493/ffffff?text=18+',
+    title: 'Test Image 2',
+    category: 'Gallery',
+    thumbnail: `${R2_URL}/test_001.png`,
+    full: `${R2_URL}/test_001.png`,
   },
   {
     id: 3,
-    title: 'Sample Image 3',
-    category: 'Cosplay',
-    thumbnail: 'https://via.placeholder.com/400x400/c71585/ffffff?text=18+',
-    full: 'https://via.placeholder.com/1200x1200/c71585/ffffff?text=18+',
+    title: 'Test Image 3',
+    category: 'Gallery',
+    thumbnail: `${R2_URL}/test_001.png`,
+    full: `${R2_URL}/test_001.png`,
   },
   {
     id: 4,
-    title: 'Sample Image 4',
-    category: 'Swimwear',
-    thumbnail: 'https://via.placeholder.com/400x400/ff69b4/ffffff?text=18+',
-    full: 'https://via.placeholder.com/1200x1200/ff69b4/ffffff?text=18+',
+    title: 'Test Image 4',
+    category: 'Gallery',
+    thumbnail: `${R2_URL}/test_001.png`,
+    full: `${R2_URL}/test_001.png`,
   },
   {
     id: 5,
-    title: 'Sample Image 5',
-    category: 'Lingerie',
-    thumbnail: 'https://via.placeholder.com/400x400/ff1493/ffffff?text=18+',
-    full: 'https://via.placeholder.com/1200x1200/ff1493/ffffff?text=18+',
+    title: 'Test Image 5',
+    category: 'Gallery',
+    thumbnail: `${R2_URL}/test_001.png`,
+    full: `${R2_URL}/test_001.png`,
   },
   {
     id: 6,
-    title: 'Sample Image 6',
-    category: 'Cosplay',
-    thumbnail: 'https://via.placeholder.com/400x400/c71585/ffffff?text=18+',
-    full: 'https://via.placeholder.com/1200x1200/c71585/ffffff?text=18+',
+    title: 'Test Image 6',
+    category: 'Gallery',
+    thumbnail: `${R2_URL}/test_001.png`,
+    full: `${R2_URL}/test_001.png`,
   },
 ]
 
