@@ -1,5 +1,5 @@
 interface AdSlotProps {
-  position: 'top' | 'bottom' | 'sidebar'
+  position: 'top' | 'bottom' | 'sidebar' | 'middle'
 }
 
 export default function AdSlot({ position }: AdSlotProps) {
@@ -7,6 +7,7 @@ export default function AdSlot({ position }: AdSlotProps) {
     top: 'h-24',
     bottom: 'h-24',
     sidebar: 'h-96',
+    middle: 'h-32',
   }
 
   return (
