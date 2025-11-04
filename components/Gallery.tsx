@@ -81,24 +81,26 @@ export default function Gallery() {
         ))}
       </div>
 
-      {/* Gallery Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      {/* Gallery - Single Column Vertical Layout */}
+      <div className="flex flex-col gap-8 max-w-4xl mx-auto">
         {filteredImages.map((image) => (
           <div
             key={image.id}
-            className="group relative aspect-square overflow-hidden rounded-lg bg-gray-800 cursor-pointer"
+            className="group relative overflow-hidden rounded-lg bg-gray-800 cursor-pointer shadow-lg hover:shadow-2xl transition-shadow"
             onClick={() => setSelectedImage(image.id)}
           >
-            <img
-              src={image.thumbnail}
-              alt={image.title}
-              className="w-full h-full object-cover transition group-hover:scale-110"
-              loading="lazy"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition">
-              <div className="absolute bottom-0 left-0 right-0 p-4">
-                <h3 className="font-semibold text-white">{image.title}</h3>
-                <p className="text-sm text-gray-300">{image.category}</p>
+            <div className="relative w-full">
+              <img
+                src={image.thumbnail}
+                alt={image.title}
+                className="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-105"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div className="absolute bottom-0 left-0 right-0 p-6">
+                  <h3 className="text-xl font-semibold text-white mb-1">{image.title}</h3>
+                  <p className="text-sm text-gray-300">{image.category}</p>
+                </div>
               </div>
             </div>
           </div>
