@@ -14,9 +14,9 @@ export default function PostNavigation({ prev, next }: PostNavigationProps) {
         {prev ? (
           <Link
             href={`/posts/${prev.slug}`}
-            className="block bg-gray-800 rounded-lg p-6 hover:bg-gray-700 transition group"
+            className="block bg-white border border-gray-200 rounded-lg p-6 hover:shadow-lg transition group"
           >
-            <div className="text-sm text-gray-400 mb-2 flex items-center gap-2">
+            <div className="text-sm text-gray-600 mb-2 flex items-center gap-2">
               <span>←</span>
               <span>前の記事</span>
             </div>
@@ -27,15 +27,15 @@ export default function PostNavigation({ prev, next }: PostNavigationProps) {
                 className="w-20 h-20 object-cover rounded"
               />
               <div className="flex-1">
-                <h3 className="text-white font-semibold line-clamp-2 group-hover:text-pink-400 transition">
+                <h3 className="text-gray-900 font-semibold line-clamp-2 group-hover:text-cyan-600 transition">
                   {prev.title}
                 </h3>
-                <p className="text-sm text-gray-400 mt-1">{prev.actress}</p>
+                <p className="text-sm text-cyan-600 mt-1 font-semibold">{prev.actress}</p>
               </div>
             </div>
           </Link>
         ) : (
-          <div className="bg-gray-800/50 rounded-lg p-6 text-gray-600 text-center">
+          <div className="bg-gray-100 border border-gray-200 rounded-lg p-6 text-gray-500 text-center">
             前の記事はありません
           </div>
         )}
@@ -46,18 +46,18 @@ export default function PostNavigation({ prev, next }: PostNavigationProps) {
         {next ? (
           <Link
             href={`/posts/${next.slug}`}
-            className="block bg-gray-800 rounded-lg p-6 hover:bg-gray-700 transition group"
+            className="block bg-white border border-gray-200 rounded-lg p-6 hover:shadow-lg transition group"
           >
-            <div className="text-sm text-gray-400 mb-2 flex items-center justify-end gap-2">
+            <div className="text-sm text-gray-600 mb-2 flex items-center justify-end gap-2">
               <span>次の記事</span>
               <span>→</span>
             </div>
             <div className="flex gap-4">
               <div className="flex-1 text-right">
-                <h3 className="text-white font-semibold line-clamp-2 group-hover:text-pink-400 transition">
+                <h3 className="text-gray-900 font-semibold line-clamp-2 group-hover:text-cyan-600 transition">
                   {next.title}
                 </h3>
-                <p className="text-sm text-gray-400 mt-1">{next.actress}</p>
+                <p className="text-sm text-cyan-600 mt-1 font-semibold">{next.actress}</p>
               </div>
               <img
                 src={next.thumbnail}
@@ -67,7 +67,7 @@ export default function PostNavigation({ prev, next }: PostNavigationProps) {
             </div>
           </Link>
         ) : (
-          <div className="bg-gray-800/50 rounded-lg p-6 text-gray-600 text-center">
+          <div className="bg-gray-100 border border-gray-200 rounded-lg p-6 text-gray-500 text-center">
             次の記事はありません
           </div>
         )}
