@@ -45,13 +45,10 @@ export default function PostPage({ params }: PostPageProps) {
   const { prev, next } = getAdjacentPosts(post.id)
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-gray-50">
       <Header />
 
-      {/* Top Ad */}
-      <AdSlot position="top" />
-
-      <main className="flex-1 container mx-auto px-4 py-8 max-w-5xl">
+      <main className="flex-1 container mx-auto px-4 py-8 max-w-4xl">
         {/* Breadcrumb */}
         <Breadcrumb
           items={[
@@ -61,29 +58,29 @@ export default function PostPage({ params }: PostPageProps) {
         />
 
         {/* Post Header */}
-        <article>
+        <article className="bg-white rounded-lg shadow-sm p-6 mb-6">
           <header className="mb-8">
             <div className="mb-4 flex flex-wrap gap-2">
-              <span className="bg-pink-500 text-white text-sm font-semibold px-4 py-1 rounded-full">
+              <span className="bg-cyan-600 text-white text-sm font-semibold px-4 py-1 rounded-full">
                 {post.category}
               </span>
               {post.tags.map((tag, index) => (
                 <span
                   key={index}
-                  className="bg-gray-800 text-pink-400 text-sm px-4 py-1 rounded-full"
+                  className="bg-cyan-100 text-cyan-700 text-sm px-4 py-1 rounded-full"
                 >
                   #{tag}
                 </span>
               ))}
             </div>
 
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               {post.title}
             </h1>
 
-            <div className="flex items-center gap-4 text-gray-400 text-sm">
+            <div className="flex items-center gap-4 text-gray-600 text-sm">
               <div className="flex items-center gap-2">
-                <span className="text-pink-400 font-semibold">{post.actress}</span>
+                <span className="text-cyan-600 font-bold text-lg">{post.actress}</span>
               </div>
               <time dateTime={post.date}>
                 {new Date(post.date).toLocaleDateString('ja-JP', {
@@ -96,14 +93,14 @@ export default function PostPage({ params }: PostPageProps) {
             </div>
           </header>
 
-          {/* Post Content - Images */}
-          <div className="space-y-6 mb-12">
+          {/* Post Content - Images - Single Column */}
+          <div className="space-y-4 mb-12">
             {post.images.map((image, index) => (
-              <div key={index} className="bg-gray-800 rounded-lg overflow-hidden">
+              <div key={index} className="w-full">
                 <img
                   src={image}
                   alt={`${post.title} - ${index + 1}`}
-                  className="w-full h-auto"
+                  className="w-full h-auto rounded-lg"
                   loading={index < 2 ? 'eager' : 'lazy'}
                 />
               </div>
@@ -112,24 +109,26 @@ export default function PostPage({ params }: PostPageProps) {
 
           {/* Ad between content */}
           <div className="my-8">
-            <AdSlot position="middle" />
+            <div className="bg-gray-100 border border-gray-300 rounded-lg p-8 text-center">
+              <p className="text-gray-500 text-sm">広告スペース</p>
+            </div>
           </div>
 
           {/* Post Info */}
-          <div className="bg-gray-800 rounded-lg p-6 mb-8">
-            <h2 className="text-xl font-bold text-white mb-3">作品情報</h2>
+          <div className="bg-gradient-to-br from-cyan-50 to-blue-50 border border-cyan-200 rounded-lg p-6 mb-8">
+            <h2 className="text-xl font-bold text-gray-800 mb-4">作品情報</h2>
             <dl className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
               <div>
-                <dt className="text-gray-400 mb-1">女優名</dt>
-                <dd className="text-white font-semibold">{post.actress}</dd>
+                <dt className="text-gray-600 mb-1">女優名</dt>
+                <dd className="text-gray-900 font-semibold text-lg">{post.actress}</dd>
               </div>
               <div>
-                <dt className="text-gray-400 mb-1">カテゴリ</dt>
-                <dd className="text-white">{post.category}</dd>
+                <dt className="text-gray-600 mb-1">カテゴリ</dt>
+                <dd className="text-gray-900">{post.category}</dd>
               </div>
               <div>
-                <dt className="text-gray-400 mb-1">公開日</dt>
-                <dd className="text-white">
+                <dt className="text-gray-600 mb-1">公開日</dt>
+                <dd className="text-gray-900">
                   {new Date(post.date).toLocaleDateString('ja-JP', {
                     year: 'numeric',
                     month: 'long',
@@ -138,8 +137,8 @@ export default function PostPage({ params }: PostPageProps) {
                 </dd>
               </div>
               <div>
-                <dt className="text-gray-400 mb-1">画像枚数</dt>
-                <dd className="text-white">{post.images.length}枚</dd>
+                <dt className="text-gray-600 mb-1">画像枚数</dt>
+                <dd className="text-gray-900">{post.images.length}枚</dd>
               </div>
             </dl>
           </div>
@@ -149,18 +148,15 @@ export default function PostPage({ params }: PostPageProps) {
         <PostNavigation prev={prev} next={next} />
 
         {/* Back to List */}
-        <div className="text-center">
+        <div className="text-center my-8">
           <a
             href="/"
-            className="inline-block bg-gray-800 text-white px-8 py-3 rounded-lg hover:bg-pink-500 transition"
+            className="inline-block bg-cyan-600 text-white px-8 py-3 rounded-lg hover:bg-cyan-700 transition font-semibold"
           >
             一覧に戻る
           </a>
         </div>
       </main>
-
-      {/* Bottom Ad */}
-      <AdSlot position="bottom" />
 
       <Footer />
     </div>
