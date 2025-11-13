@@ -23,28 +23,8 @@ export const posts: Post[] = [
       "グラビア",
       "水着",
       "ビーチ"
-    ]
-  },
-  {
-    "id": 2,
-    "slug": "actress-gravure-002",
-    "title": "夏の水着特集 Vol.2",
-    "actress": "サンプル女優B",
-    "category": "水着",
-    "thumbnail": "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actresses/actress-002/1.jpg",
-    "images": [
-      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actresses/actress-002/1.jpg",
-      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actresses/actress-002/2.jpg",
-      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actresses/actress-002/3.jpg",
-      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actresses/actress-002/4.jpg"
     ],
-    "date": "2024-01-14",
-    "excerpt": "夏の海辺で撮影された水着グラビア。",
-    "tags": [
-      "水着",
-      "夏",
-      "ビーチ"
-    ]
+    "popularity": 100
   },
   {
     "id": 3,
@@ -66,7 +46,30 @@ export const posts: Post[] = [
     "tags": [
       "グラビア",
       "清楚系"
-    ]
+    ],
+    "popularity": 92
+  },
+  {
+    "id": 2,
+    "slug": "actress-gravure-002",
+    "title": "夏の水着特集 Vol.2",
+    "actress": "サンプル女優B",
+    "category": "水着",
+    "thumbnail": "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actresses/actress-002/1.jpg",
+    "images": [
+      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actresses/actress-002/1.jpg",
+      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actresses/actress-002/2.jpg",
+      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actresses/actress-002/3.jpg",
+      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actresses/actress-002/4.jpg"
+    ],
+    "date": "2024-01-14",
+    "excerpt": "夏の海辺で撮影された水着グラビア。",
+    "tags": [
+      "水着",
+      "夏",
+      "ビーチ"
+    ],
+    "popularity": 85
   }
 ]
 

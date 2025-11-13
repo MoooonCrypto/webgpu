@@ -41,14 +41,15 @@ function generatePosts() {
       images: images,
       date: data.date,
       excerpt: data.excerpt,
-      tags: data.tags
+      tags: data.tags,
+      popularity: data.popularity || 50
     })
 
     console.log(`  ✓ Generated post: ${data.name} (${images.length} images)`)
   })
 
-  // 日付順にソート（新しい順）
-  posts.sort((a, b) => new Date(b.date) - new Date(a.date))
+  // 人気順にソート（高い順）
+  posts.sort((a, b) => b.popularity - a.popularity)
 
   // TypeScriptファイルを生成
   const output = `import { Post } from '@/types/Post'

@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'グラビアコレクション - 18+ Only',
-  description: 'グラビア画像ギャラリー - 18歳以上限定',
+  title: 'グラビア図鑑 - 18+ Only',
+  description: 'グラビア画像図鑑 - 18歳以上限定',
   robots: 'noindex, nofollow',
 }
 
