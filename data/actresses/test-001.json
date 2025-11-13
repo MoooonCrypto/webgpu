@@ -1,0 +1,12 @@
+{
+  "slug": "test-gravure-001",
+  "name": "テスト女優A",
+  "title": "テストグラビア撮影 Vol.1",
+  "category": "グラビア",
+  "date": "2025-01-15",
+  "excerpt": "R2画像連携テスト用のサンプル投稿です。実際の運用と同じ形式で画像を表示しています。",
+  "tags": ["テスト", "グラビア", "サンプル"],
+  "imageCount": 5,
+  "folder": "test-actress-001",
+  "popularity": 95
+}
