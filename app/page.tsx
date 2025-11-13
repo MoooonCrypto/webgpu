@@ -5,6 +5,7 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import Sidebar from '@/components/Sidebar'
 import PostCard from '@/components/PostCard'
+import ScrollToTop from '@/components/ScrollToTop'
 import { posts } from '@/data/posts'
 
 export default function Home() {
@@ -43,7 +44,7 @@ export default function Home() {
                   className={`px-4 py-2 rounded-lg transition ${
                     currentPage === 1
                       ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                      : 'bg-cyan-600 text-white hover:bg-cyan-700'
+                      : 'bg-pink-600 text-white hover:bg-pink-700'
                   }`}
                 >
                   ← 前へ
@@ -68,7 +69,7 @@ export default function Home() {
                         onClick={() => setCurrentPage(page)}
                         className={`px-4 py-2 rounded-lg font-semibold transition ${
                           page === currentPage
-                            ? 'bg-cyan-600 text-white'
+                            ? 'bg-pink-600 text-white'
                             : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-100'
                         }`}
                       >
@@ -85,7 +86,7 @@ export default function Home() {
                   className={`px-4 py-2 rounded-lg transition ${
                     currentPage === totalPages
                       ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                      : 'bg-cyan-600 text-white hover:bg-cyan-700'
+                      : 'bg-pink-600 text-white hover:bg-pink-700'
                   }`}
                 >
                   次へ →
@@ -94,25 +95,28 @@ export default function Home() {
             )}
 
             {/* Recommended Posts */}
-            <div className="mt-12 bg-white border border-gray-200 rounded-lg p-6">
+            <div className="mt-12 bg-white border border-pink-200 rounded-lg p-6">
               <h2 className="text-2xl font-bold text-gray-800 mb-6">おすすめの女優</h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="space-y-4">
                 {recommendedPosts.map(post => (
                   <a
                     key={post.id}
                     href={`/posts/${post.slug}`}
-                    className="group block"
+                    className="group flex items-center gap-4 p-3 rounded-lg hover:bg-pink-50 transition"
                   >
-                    <div className="relative aspect-[3/4] overflow-hidden rounded-lg mb-2">
+                    <div className="relative w-24 h-24 overflow-hidden rounded-lg flex-shrink-0">
                       <img
                         src={post.thumbnail}
                         alt={post.title}
                         className="w-full h-full object-cover transition-transform group-hover:scale-110"
                       />
                     </div>
-                    <h3 className="font-semibold text-gray-900 text-sm group-hover:text-cyan-600">
-                      {post.actress}
-                    </h3>
+                    <div>
+                      <h3 className="font-semibold text-gray-900 group-hover:text-pink-600 transition">
+                        {post.actress}
+                      </h3>
+                      <p className="text-sm text-gray-600 mt-1">{post.title}</p>
+                    </div>
                   </a>
                 ))}
               </div>
@@ -129,6 +133,7 @@ export default function Home() {
       </div>
 
       <Footer />
+      <ScrollToTop />
     </div>
   )
 }

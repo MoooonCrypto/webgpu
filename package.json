@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "generate": "node scripts/generate-posts.js",
+    "prebuild": "npm run generate",
     "build": "next build",
     "start": "next start",
     "export": "next build && next export"

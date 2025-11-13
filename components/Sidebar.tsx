@@ -14,23 +14,23 @@ export default function Sidebar() {
   return (
     <aside className="space-y-6">
       {/* 検索ボックス */}
-      <div className="bg-white border border-cyan-200 rounded-lg p-4 shadow-sm">
+      <div className="bg-white border border-pink-200 rounded-lg p-4 shadow-sm">
         <h3 className="text-lg font-bold text-gray-800 mb-3">検索</h3>
         <input
           type="text"
           placeholder="女優名で検索..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 text-gray-900"
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 text-gray-900"
         />
       </div>
 
       {/* カテゴリ */}
-      <div className="bg-white border border-cyan-200 rounded-lg p-4 shadow-sm">
+      <div className="bg-white border border-pink-200 rounded-lg p-4 shadow-sm">
         <h3 className="text-lg font-bold text-gray-800 mb-3">カテゴリ</h3>
         <ul className="space-y-2">
           <li>
-            <Link href="/" className="text-cyan-600 hover:text-cyan-700 text-sm">
+            <Link href="/" className="text-pink-600 hover:text-pink-700 text-sm">
               すべて ({posts.length})
             </Link>
           </li>
@@ -40,7 +40,7 @@ export default function Sidebar() {
               <li key={category}>
                 <Link
                   href={`/?category=${category}`}
-                  className="text-gray-600 hover:text-cyan-600 text-sm"
+                  className="text-gray-600 hover:text-pink-600 text-sm"
                 >
                   {category} ({count})
                 </Link>
@@ -51,12 +51,12 @@ export default function Sidebar() {
       </div>
 
       {/* 女優索引 */}
-      <div className="bg-white border border-cyan-200 rounded-lg p-4 shadow-sm">
+      <div className="bg-white border border-pink-200 rounded-lg p-4 shadow-sm">
         <h3 className="text-lg font-bold text-gray-800 mb-3">女優索引</h3>
         <ul className="space-y-2 max-h-64 overflow-y-auto">
           {actresses.map(actress => (
             <li key={actress}>
-              <button className="text-gray-600 hover:text-cyan-600 text-sm text-left w-full">
+              <button className="text-gray-600 hover:text-pink-600 text-sm text-left w-full">
                 {actress}
               </button>
             </li>
@@ -65,14 +65,14 @@ export default function Sidebar() {
       </div>
 
       {/* お問い合わせ */}
-      <div className="bg-gradient-to-br from-cyan-50 to-blue-50 border border-cyan-200 rounded-lg p-4 shadow-sm">
+      <div className="bg-gradient-to-br from-pink-50 to-rose-50 border border-pink-200 rounded-lg p-4 shadow-sm">
         <h3 className="text-lg font-bold text-gray-800 mb-3">お問い合わせ</h3>
         <p className="text-sm text-gray-600 mb-3">
           削除依頼やご質問はこちらから
         </p>
         <Link
           href="/contact"
-          className="block text-center bg-cyan-600 text-white px-4 py-2 rounded-lg hover:bg-cyan-700 transition text-sm font-semibold"
+          className="block text-center bg-pink-600 text-white px-4 py-2 rounded-lg hover:bg-pink-700 transition text-sm font-semibold"
         >
           お問い合わせフォーム
         </Link>

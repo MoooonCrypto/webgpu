@@ -4,6 +4,7 @@ import Footer from '@/components/Footer'
 import AdSlot from '@/components/AdSlot'
 import Breadcrumb from '@/components/Breadcrumb'
 import PostNavigation from '@/components/PostNavigation'
+import ScrollToTop from '@/components/ScrollToTop'
 import { posts, getPostBySlug, getAdjacentPosts } from '@/data/posts'
 import type { Metadata } from 'next'
 
@@ -61,13 +62,13 @@ export default function PostPage({ params }: PostPageProps) {
         <article className="bg-white rounded-lg shadow-sm p-6 mb-6">
           <header className="mb-8">
             <div className="mb-4 flex flex-wrap gap-2">
-              <span className="bg-cyan-600 text-white text-sm font-semibold px-4 py-1 rounded-full">
+              <span className="bg-pink-600 text-white text-sm font-semibold px-4 py-1 rounded-full">
                 {post.category}
               </span>
               {post.tags.map((tag, index) => (
                 <span
                   key={index}
-                  className="bg-cyan-100 text-cyan-700 text-sm px-4 py-1 rounded-full"
+                  className="bg-pink-100 text-pink-700 text-sm px-4 py-1 rounded-full"
                 >
                   #{tag}
                 </span>
@@ -80,7 +81,7 @@ export default function PostPage({ params }: PostPageProps) {
 
             <div className="flex items-center gap-4 text-gray-600 text-sm">
               <div className="flex items-center gap-2">
-                <span className="text-cyan-600 font-bold text-lg">{post.actress}</span>
+                <span className="text-pink-600 font-bold text-lg">{post.actress}</span>
               </div>
               <time dateTime={post.date}>
                 {new Date(post.date).toLocaleDateString('ja-JP', {
@@ -115,7 +116,7 @@ export default function PostPage({ params }: PostPageProps) {
           </div>
 
           {/* Post Info */}
-          <div className="bg-gradient-to-br from-cyan-50 to-blue-50 border border-cyan-200 rounded-lg p-6 mb-8">
+          <div className="bg-gradient-to-br from-pink-50 to-rose-50 border border-pink-200 rounded-lg p-6 mb-8">
             <h2 className="text-xl font-bold text-gray-800 mb-4">作品情報</h2>
             <dl className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
               <div>
@@ -151,7 +152,7 @@ export default function PostPage({ params }: PostPageProps) {
         <div className="text-center my-8">
           <a
             href="/"
-            className="inline-block bg-cyan-600 text-white px-8 py-3 rounded-lg hover:bg-cyan-700 transition font-semibold"
+            className="inline-block bg-pink-600 text-white px-8 py-3 rounded-lg hover:bg-pink-700 transition font-semibold"
           >
             一覧に戻る
           </a>
@@ -159,6 +160,7 @@ export default function PostPage({ params }: PostPageProps) {
       </main>
 
       <Footer />
+      <ScrollToTop />
     </div>
   )
 }
