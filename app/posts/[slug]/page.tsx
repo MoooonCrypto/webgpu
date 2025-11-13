@@ -4,6 +4,7 @@ import Footer from '@/components/Footer'
 import AdSlot from '@/components/AdSlot'
 import Breadcrumb from '@/components/Breadcrumb'
 import PostNavigation from '@/components/PostNavigation'
+import EncyclopediaCard from '@/components/EncyclopediaCard'
 import ScrollToTop from '@/components/ScrollToTop'
 import { posts, getPostBySlug, getAdjacentPosts } from '@/data/posts'
 import type { Metadata } from 'next'
@@ -23,7 +24,7 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
   }
 
   return {
-    title: `${post.title} - ${post.actress} | グラビアコレクション`,
+    title: `${post.title} - ${post.actress} | グラビア図鑑`,
     description: post.excerpt,
     robots: 'noindex, nofollow',
   }
@@ -44,6 +45,11 @@ export default function PostPage({ params }: PostPageProps) {
   }
 
   const { prev, next } = getAdjacentPosts(post.id)
+
+  // 同じカテゴリーのおすすめ投稿（現在の投稿を除く、最大6件）
+  const recommendedPosts = posts
+    .filter(p => p.category === post.category && p.id !== post.id)
+    .slice(0, 6)
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
@@ -147,6 +153,20 @@ export default function PostPage({ params }: PostPageProps) {
 
         {/* Post Navigation */}
         <PostNavigation prev={prev} next={next} />
+
+        {/* Recommended Posts */}
+        {recommendedPosts.length > 0 && (
+          <div className="my-12">
+            <h2 className="text-2xl font-bold text-gray-800 mb-6">
+              同じカテゴリーのおすすめ
+            </h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+              {recommendedPosts.map(recommendedPost => (
+                <EncyclopediaCard key={recommendedPost.id} post={recommendedPost} />
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Back to List */}
         <div className="text-center my-8">
