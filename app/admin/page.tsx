@@ -5,32 +5,20 @@ import { getAllCategories } from '@/data/posts'
 
 interface PostForm {
   id: string
-  slug: string
-  name: string
-  title: string
   category: string
-  date: string
-  excerpt: string
-  tags: string
-  imageCount: number
+  name: string
   folder: string
-  popularity: number
+  imageCount: number
 }
 
 export default function AdminPage() {
   const existingCategories = getAllCategories()
   const [posts, setPosts] = useState<PostForm[]>([{
     id: Date.now().toString(),
-    slug: '',
-    name: '',
-    title: '',
     category: '',
-    date: new Date().toISOString().split('T')[0],
-    excerpt: '',
-    tags: '',
-    imageCount: 1,
+    name: '',
     folder: '',
-    popularity: 50
+    imageCount: 1
   }])
 
   const [newCategory, setNewCategory] = useState('')
@@ -38,16 +26,10 @@ export default function AdminPage() {
   const addPost = () => {
     setPosts([...posts, {
       id: Date.now().toString(),
-      slug: '',
-      name: '',
-      title: '',
       category: '',
-      date: new Date().toISOString().split('T')[0],
-      excerpt: '',
-      tags: '',
-      imageCount: 1,
+      name: '',
       folder: '',
-      popularity: 50
+      imageCount: 1
     }])
   }
 
@@ -61,16 +43,16 @@ export default function AdminPage() {
 
   const generateJSON = (post: PostForm) => {
     return {
-      slug: post.slug,
+      slug: post.folder,
       name: post.name,
-      title: post.title,
+      title: post.name,
       category: post.category,
-      date: post.date,
-      excerpt: post.excerpt,
-      tags: post.tags.split(',').map(t => t.trim()).filter(t => t),
+      date: new Date().toISOString().split('T')[0],
+      excerpt: `${post.name}の写真集です。`,
+      tags: [post.category, post.name],
       imageCount: post.imageCount,
       folder: post.folder,
-      popularity: post.popularity
+      popularity: 50
     }
   }
 
@@ -87,50 +69,82 @@ export default function AdminPage() {
 
   const downloadAllJSON = () => {
     posts.forEach((post, index) => {
-      const filename = post.folder ? `${post.folder}.json` : `actress-${String(index + 1).padStart(3, '0')}.json`
+      const filename = `${post.folder}.json`
       setTimeout(() => downloadJSON(post, filename), index * 100)
     })
   }
 
   const copyAllInstructions = () => {
-    const instructions = posts.map((post, index) => {
-      const filename = post.folder ? `${post.folder}.json` : `actress-${String(index + 1).padStart(3, '0')}.json`
-      const json = JSON.stringify(generateJSON(post), null, 2)
-      return `# ${index + 1}. ${post.name}\n\nファイル名: data/actresses/${filename}\n\n\`\`\`json\n${json}\n\`\`\`\n\nR2パス: actresses/${post.folder}/1.jpg ~ ${post.imageCount}.jpg\n`
-    }).join('\n\n---\n\n')
+    const instructions = `# 📦 一括登録手順
+
+## 1. ダウンロードしたJSONファイルを配置
+
+以下のファイルを \`data/actresses/\` に配置してください：
+
+${posts.map((post, index) => `- ${post.folder}.json`).join('\n')}
+
+## 2. R2に画像をアップロード
+
+${posts.map((post, index) => {
+  return `### ${index + 1}. ${post.name}
+\`\`\`
+actresses/${post.folder}/1.jpg
+actresses/${post.folder}/2.jpg
+${post.imageCount > 2 ? `actresses/${post.folder}/3.jpg` : ''}
+${post.imageCount > 3 ? '...' : ''}
+actresses/${post.folder}/${post.imageCount}.jpg
+\`\`\`
+`
+}).join('\n')}
+
+## 3. GitHubにプッシュ
+
+\`\`\`bash
+git add data/actresses/
+git commit -m "Add ${posts.length} new posts"
+git push
+\`\`\`
+
+→ 自動デプロイされます！
+`
 
     navigator.clipboard.writeText(instructions)
-    alert('コピーしました！')
+    alert('手順をコピーしました！')
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 py-8">
-      <div className="container mx-auto px-4 max-w-6xl">
-        <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 to-rose-50 py-8">
+      <div className="container mx-auto px-4 max-w-5xl">
+        {/* ヘッダー */}
+        <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
+          <h1 className="text-4xl font-bold text-pink-600 mb-2">
             📝 コンテンツ管理画面
           </h1>
-          <p className="text-gray-600 mb-6">
-            複数の記事を一括で登録できます。入力後、JSONファイルをダウンロードして <code className="bg-gray-100 px-2 py-1 rounded">data/actresses/</code> に配置してください。
+          <p className="text-gray-600 text-lg">
+            必要な情報を入力してJSONをダウンロード → R2に画像配置 → Git push
           </p>
+        </div>
 
-          {/* 一括操作ボタン */}
-          <div className="flex gap-4 mb-8">
+        {/* 一括操作ボタン */}
+        <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
+          <div className="flex flex-wrap gap-4">
             <button
               onClick={addPost}
-              className="bg-pink-600 text-white px-6 py-3 rounded-lg hover:bg-pink-700 transition font-semibold"
+              className="flex-1 min-w-[200px] bg-pink-600 text-white px-8 py-4 rounded-lg hover:bg-pink-700 transition font-bold text-lg shadow-md hover:shadow-lg"
             >
               ➕ 記事を追加
             </button>
             <button
               onClick={downloadAllJSON}
-              className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition font-semibold"
+              disabled={posts.length === 0}
+              className="flex-1 min-w-[200px] bg-blue-600 text-white px-8 py-4 rounded-lg hover:bg-blue-700 transition font-bold text-lg shadow-md hover:shadow-lg disabled:bg-gray-300 disabled:cursor-not-allowed"
             >
-              💾 全てダウンロード ({posts.length}件)
+              💾 全JSONダウンロード ({posts.length}件)
             </button>
             <button
               onClick={copyAllInstructions}
-              className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition font-semibold"
+              disabled={posts.length === 0}
+              className="flex-1 min-w-[200px] bg-green-600 text-white px-8 py-4 rounded-lg hover:bg-green-700 transition font-bold text-lg shadow-md hover:shadow-lg disabled:bg-gray-300 disabled:cursor-not-allowed"
             >
               📋 手順をコピー
             </button>
@@ -140,95 +154,44 @@ export default function AdminPage() {
         {/* 記事フォーム */}
         <div className="space-y-6">
           {posts.map((post, index) => (
-            <div key={post.id} className="bg-white rounded-lg shadow-lg p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-bold text-gray-800">
+            <div key={post.id} className="bg-white rounded-xl shadow-lg p-8">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold text-gray-800">
                   記事 #{index + 1}
                 </h2>
                 {posts.length > 1 && (
                   <button
                     onClick={() => removePost(post.id)}
-                    className="text-red-600 hover:text-red-700 font-semibold"
+                    className="text-red-600 hover:text-red-700 font-bold text-lg hover:bg-red-50 px-4 py-2 rounded-lg transition"
                   >
                     🗑️ 削除
                   </button>
                 )}
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {/* 女優名 */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    女優名・記事名 *
-                  </label>
-                  <input
-                    type="text"
-                    value={post.name}
-                    onChange={(e) => updatePost(post.id, 'name', e.target.value)}
-                    placeholder="例: 女優A①"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
-                  />
-                </div>
-
-                {/* タイトル */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    記事タイトル *
-                  </label>
-                  <input
-                    type="text"
-                    value={post.title}
-                    onChange={(e) => updatePost(post.id, 'title', e.target.value)}
-                    placeholder="例: 女優A① 写真集"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
-                  />
-                </div>
-
-                {/* スラッグ */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    スラッグ（URL用） *
-                  </label>
-                  <input
-                    type="text"
-                    value={post.slug}
-                    onChange={(e) => updatePost(post.id, 'slug', e.target.value)}
-                    placeholder="例: actress-a-001"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
-                  />
-                  <p className="text-xs text-gray-500 mt-1">半角英数字とハイフンのみ</p>
-                </div>
-
-                {/* フォルダ名 */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    R2フォルダ名 *
-                  </label>
-                  <input
-                    type="text"
-                    value={post.folder}
-                    onChange={(e) => updatePost(post.id, 'folder', e.target.value)}
-                    placeholder="例: actress-a-001"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
-                  />
-                  <p className="text-xs text-gray-500 mt-1">R2のactresses/{'{'}この名前{'}'}/</p>
-                </div>
-
+              <div className="space-y-6">
                 {/* カテゴリ */}
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    カテゴリ *
+                  <label className="block text-lg font-bold text-gray-700 mb-3">
+                    1️⃣ カテゴリ名 *
                   </label>
                   <select
-                    value={post.category}
-                    onChange={(e) => updatePost(post.id, 'category', e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                    value={post.category === '__new__' ? '__new__' : post.category}
+                    onChange={(e) => {
+                      if (e.target.value === '__new__') {
+                        updatePost(post.id, 'category', '__new__')
+                      } else {
+                        updatePost(post.id, 'category', e.target.value)
+                        setNewCategory('')
+                      }
+                    }}
+                    className="w-full px-6 py-4 text-lg border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
                   >
                     <option value="">選択してください</option>
                     {existingCategories.map(cat => (
                       <option key={cat} value={cat}>{cat}</option>
                     ))}
-                    <option value="__new__">➕ 新しいカテゴリ</option>
+                    <option value="__new__">➕ 新しいカテゴリを作成</option>
                   </select>
                   {post.category === '__new__' && (
                     <input
@@ -238,103 +201,77 @@ export default function AdminPage() {
                         setNewCategory(e.target.value)
                         updatePost(post.id, 'category', e.target.value)
                       }}
-                      placeholder="新しいカテゴリ名を入力"
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent mt-2"
+                      placeholder="新しいカテゴリ名を入力（例：女優A、乃木坂）"
+                      className="w-full px-6 py-4 text-lg border-2 border-pink-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 mt-3"
                     />
                   )}
                 </div>
 
+                {/* 記事名 */}
+                <div>
+                  <label className="block text-lg font-bold text-gray-700 mb-3">
+                    2️⃣ 記事名 *
+                  </label>
+                  <input
+                    type="text"
+                    value={post.name}
+                    onChange={(e) => updatePost(post.id, 'name', e.target.value)}
+                    placeholder="例: 女優A 記事①、齋藤飛鳥①"
+                    className="w-full px-6 py-4 text-lg border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
+                  />
+                </div>
+
+                {/* フォルダ名 */}
+                <div>
+                  <label className="block text-lg font-bold text-gray-700 mb-3">
+                    3️⃣ R2フォルダ名 *
+                  </label>
+                  <input
+                    type="text"
+                    value={post.folder}
+                    onChange={(e) => updatePost(post.id, 'folder', e.target.value)}
+                    placeholder="例: actress-a-001、nogizaka-asuka-001"
+                    className="w-full px-6 py-4 text-lg border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
+                  />
+                  <p className="text-sm text-gray-500 mt-2">半角英数字とハイフンのみ</p>
+                </div>
+
                 {/* 画像枚数 */}
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    画像枚数 *
+                  <label className="block text-lg font-bold text-gray-700 mb-3">
+                    4️⃣ 画像枚数 *
                   </label>
                   <input
                     type="number"
                     value={post.imageCount}
                     onChange={(e) => updatePost(post.id, 'imageCount', parseInt(e.target.value) || 1)}
                     min="1"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
-                  />
-                </div>
-
-                {/* 人気度 */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    人気度スコア
-                  </label>
-                  <input
-                    type="number"
-                    value={post.popularity}
-                    onChange={(e) => updatePost(post.id, 'popularity', parseInt(e.target.value) || 50)}
-                    min="1"
-                    max="100"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
-                  />
-                  <p className="text-xs text-gray-500 mt-1">1-100 (高いほど上位表示)</p>
-                </div>
-
-                {/* 公開日 */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    公開日
-                  </label>
-                  <input
-                    type="date"
-                    value={post.date}
-                    onChange={(e) => updatePost(post.id, 'date', e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
-                  />
-                </div>
-
-                {/* 説明文 */}
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    説明文
-                  </label>
-                  <textarea
-                    value={post.excerpt}
-                    onChange={(e) => updatePost(post.id, 'excerpt', e.target.value)}
-                    placeholder="記事の簡単な説明"
-                    rows={2}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
-                  />
-                </div>
-
-                {/* タグ */}
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    タグ（カンマ区切り）
-                  </label>
-                  <input
-                    type="text"
-                    value={post.tags}
-                    onChange={(e) => updatePost(post.id, 'tags', e.target.value)}
-                    placeholder="例: グラビア, 水着, ビーチ"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                    className="w-full px-6 py-4 text-lg border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
                   />
                 </div>
               </div>
 
               {/* R2パス表示 */}
-              <div className="mt-4 p-4 bg-gray-50 rounded-lg">
-                <p className="text-sm font-semibold text-gray-700 mb-2">📁 R2アップロードパス:</p>
-                <code className="text-sm text-gray-800">
-                  actresses/{post.folder || '???'}/<br />
-                  {Array.from({ length: post.imageCount }, (_, i) => (
-                    <span key={i} className="ml-4">
-                      {i + 1}.jpg<br />
-                    </span>
-                  ))}
-                </code>
+              <div className="mt-8 p-6 bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-lg">
+                <p className="text-lg font-bold text-blue-800 mb-3">📁 R2にアップロードする場所:</p>
+                <div className="bg-white p-4 rounded-lg">
+                  <code className="text-sm text-gray-800 block">
+                    <span className="text-blue-600 font-bold">actresses/{post.folder || '???'}/</span><br />
+                    {post.folder && Array.from({ length: post.imageCount }, (_, i) => (
+                      <span key={i} className="ml-4 block">
+                        {i + 1}.jpg
+                      </span>
+                    ))}
+                  </code>
+                </div>
               </div>
 
               {/* ダウンロードボタン */}
-              <div className="mt-4">
+              <div className="mt-6">
                 <button
-                  onClick={() => downloadJSON(post, post.folder ? `${post.folder}.json` : `actress-${String(index + 1).padStart(3, '0')}.json`)}
-                  disabled={!post.name || !post.slug || !post.folder}
-                  className="bg-pink-600 text-white px-6 py-2 rounded-lg hover:bg-pink-700 transition font-semibold disabled:bg-gray-300 disabled:cursor-not-allowed"
+                  onClick={() => downloadJSON(post, `${post.folder}.json`)}
+                  disabled={!post.name || !post.folder || !post.category || post.category === '__new__'}
+                  className="w-full bg-pink-600 text-white px-8 py-4 rounded-lg hover:bg-pink-700 transition font-bold text-lg shadow-md hover:shadow-lg disabled:bg-gray-300 disabled:cursor-not-allowed"
                 >
                   💾 この記事のJSONをダウンロード
                 </button>
@@ -344,15 +281,13 @@ export default function AdminPage() {
         </div>
 
         {/* 使い方 */}
-        <div className="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-6">
-          <h3 className="text-lg font-bold text-blue-800 mb-2">📖 使い方</h3>
-          <ol className="list-decimal list-inside space-y-2 text-blue-900">
-            <li>必要な記事数だけフォームを追加</li>
-            <li>各記事の情報を入力</li>
-            <li>「全てダウンロード」で全JSONファイルをダウンロード</li>
-            <li>ダウンロードしたJSONを <code className="bg-blue-100 px-2 py-1 rounded">data/actresses/</code> に配置</li>
-            <li>R2に画像をアップロード（表示されたパスに従って）</li>
-            <li><code className="bg-blue-100 px-2 py-1 rounded">git add → commit → push</code></li>
+        <div className="mt-8 bg-white rounded-xl shadow-lg p-8">
+          <h3 className="text-2xl font-bold text-gray-800 mb-4">📖 使い方</h3>
+          <ol className="list-decimal list-inside space-y-3 text-gray-700 text-lg">
+            <li><strong>4項目を入力</strong>（カテゴリ、記事名、フォルダ名、画像枚数）</li>
+            <li><strong>JSONダウンロード</strong> → <code className="bg-gray-100 px-2 py-1 rounded">data/actresses/</code> に配置</li>
+            <li><strong>R2に画像アップロード</strong>（表示されたパスに従って）</li>
+            <li><strong>Git push</strong> → 自動デプロイ！</li>
           </ol>
         </div>
       </div>
