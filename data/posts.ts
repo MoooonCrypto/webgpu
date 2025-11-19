@@ -27,6 +27,29 @@ export const posts: Post[] = [
     "popularity": 100
   },
   {
+    "id": 5,
+    "slug": "test-gravure-001",
+    "title": "テストグラビア撮影 Vol.1",
+    "actress": "テスト女優A",
+    "category": "グラビア",
+    "thumbnail": "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actresses/test-actress-001/1.jpg",
+    "images": [
+      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actresses/test-actress-001/1.jpg",
+      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actresses/test-actress-001/2.jpg",
+      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actresses/test-actress-001/3.jpg",
+      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actresses/test-actress-001/4.jpg",
+      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actresses/test-actress-001/5.jpg"
+    ],
+    "date": "2025-01-15",
+    "excerpt": "R2画像連携テスト用のサンプル投稿です。実際の運用と同じ形式で画像を表示しています。",
+    "tags": [
+      "テスト",
+      "グラビア",
+      "サンプル"
+    ],
+    "popularity": 95
+  },
+  {
     "id": 3,
     "slug": "actress-gravure-003",
     "title": "清楚系グラビア Vol.3",
@@ -68,6 +91,25 @@ export const posts: Post[] = [
       "水着",
       "夏",
       "ビーチ"
+    ],
+    "popularity": 85
+  },
+  {
+    "id": 4,
+    "slug": "stage-actress-a-001",
+    "title": "女優A① 舞台写真集",
+    "actress": "女優A①",
+    "category": "舞台女優",
+    "thumbnail": "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actresses/actress-stage-001/1.jpg",
+    "images": [
+      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actresses/actress-stage-001/1.jpg",
+      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actresses/actress-stage-001/2.jpg"
+    ],
+    "date": "2025-01-16",
+    "excerpt": "女優A①の舞台公演写真です。",
+    "tags": [
+      "舞台女優",
+      "女優A"
     ],
     "popularity": 85
   }
