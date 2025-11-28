@@ -1,8 +1,17 @@
 {
   "mcpServers": {
+    "filesystem": {
+      "type": "stdio",
+      "command": "/opt/homebrew/bin/npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/Users/daisuke/Desktop/project/開発アイデア/ADメディアサイト/adult-pic-media"
+      ]
+    },
     "serena": {
       "type": "stdio",
-      "command": "uvx",
+      "command": "/opt/homebrew/bin/uvx",
       "args": [
         "--from",
         "git+https://github.com/oraios/serena",
