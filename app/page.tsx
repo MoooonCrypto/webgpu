@@ -26,26 +26,38 @@ export default function Home() {
   }))
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50">
+    <div className="min-h-screen flex flex-col relative">
       <Header />
 
-      <div className="flex-1 container mx-auto px-4 py-8">
+      <div className="flex-1 container mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-16 relative z-10">
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Main Content */}
           <main className="flex-1">
             {/* Category Sections */}
-            {categoryPosts.map(({ category, posts: categoryPostsList }) => (
-              <section key={category} className="mb-12">
-                <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-2xl font-bold text-gray-800">{category}</h2>
+            {categoryPosts.map(({ category, posts: categoryPostsList }, idx) => (
+              <section
+                key={category}
+                className="mb-16 animate-fadeInUp opacity-0"
+                style={{ animationDelay: `${0.1 + idx * 0.05}s` }}
+              >
+                <div className="flex items-center justify-between mb-8">
+                  <div>
+                    <h2 className="text-3xl sm:text-4xl font-bold text-charcoal mb-2">
+                      {category}
+                    </h2>
+                    <div className="h-1 w-20 bg-gradient-to-r from-[#000000] to-[#2d2d2d] rounded-full"></div>
+                  </div>
                   <Link
                     href={`/category/${encodeURIComponent(category)}`}
-                    className="bg-pink-600 text-white px-6 py-2 rounded-lg hover:bg-pink-700 transition font-semibold text-sm"
+                    className="group relative inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-[#000000] to-[#1a1a1a] text-white font-semibold text-sm shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
                   >
-                    もっと見る →
+                    もっと見る
+                    <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
                   </Link>
                 </div>
-                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 sm:gap-6">
                   {categoryPostsList.map(post => (
                     <EncyclopediaCard key={post.id} post={post} />
                   ))}
@@ -54,16 +66,24 @@ export default function Home() {
             ))}
 
             {/* All Posts Section */}
-            <section className="mt-16">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-3xl font-bold text-gray-800">すべての投稿</h2>
-                <span className="text-gray-600 text-sm">
-                  人気順に表示 • 全{posts.length}件
-                </span>
+            <section className="mt-24">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4">
+                <div>
+                  <h2 className="text-3xl sm:text-4xl font-bold text-charcoal mb-2">
+                    すべての投稿
+                  </h2>
+                  <div className="h-1 w-20 bg-gradient-to-r from-[#000000] to-[#2d2d2d] rounded-full"></div>
+                </div>
+                <div className="flex items-center gap-2 text-gray text-sm font-medium backdrop-blur-sm bg-white/60 px-4 py-2 rounded-full">
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M3 3a1 1 0 000 2h11a1 1 0 100-2H3zM3 7a1 1 0 000 2h5a1 1 0 000-2H3zM3 11a1 1 0 100 2h4a1 1 0 100-2H3zM13 16a1 1 0 102 0v-5.586l1.293 1.293a1 1 0 001.414-1.414l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 101.414 1.414L13 10.414V16z" />
+                  </svg>
+                  人気順 • 全{posts.length}件
+                </div>
               </div>
 
               {/* Posts Grid */}
-              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-10">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 sm:gap-6 mb-12">
                 {paginatedPosts.map(post => (
                   <EncyclopediaCard key={post.id} post={post} />
                 ))}
@@ -71,18 +91,21 @@ export default function Home() {
 
               {/* Pagination */}
               {totalPages > 1 && (
-                <div className="flex justify-center items-center gap-2 mt-10">
+                <div className="flex justify-center items-center gap-3 mt-12">
                   {/* Previous Button */}
                   <button
                     onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
                     disabled={currentPage === 1}
-                    className={`px-4 py-2 rounded-lg transition ${
+                    className={`flex items-center gap-2 px-5 py-2.5 rounded-full font-semibold text-sm transition-all duration-300 ${
                       currentPage === 1
                         ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                        : 'bg-pink-600 text-white hover:bg-pink-700'
+                        : 'bg-gradient-to-r from-[#000000] to-[#1a1a1a] text-white hover:shadow-lg hover:scale-105'
                     }`}
                   >
-                    ← 前へ
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                    </svg>
+                    前へ
                   </button>
 
                   {/* Page Numbers */}
@@ -102,10 +125,10 @@ export default function Home() {
                         <button
                           key={page}
                           onClick={() => setCurrentPage(page)}
-                          className={`px-4 py-2 rounded-lg font-semibold transition ${
+                          className={`w-10 h-10 rounded-full font-bold text-sm transition-all duration-300 ${
                             page === currentPage
-                              ? 'bg-pink-600 text-white'
-                              : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-100'
+                              ? 'bg-gradient-to-r from-[#000000] to-[#1a1a1a] text-white shadow-lg scale-110'
+                              : 'glass-effect text-gray hover:scale-105 hover:text-[#000000]'
                           }`}
                         >
                           {page}
@@ -118,13 +141,16 @@ export default function Home() {
                   <button
                     onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
                     disabled={currentPage === totalPages}
-                    className={`px-4 py-2 rounded-lg transition ${
+                    className={`flex items-center gap-2 px-5 py-2.5 rounded-full font-semibold text-sm transition-all duration-300 ${
                       currentPage === totalPages
                         ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                        : 'bg-pink-600 text-white hover:bg-pink-700'
+                        : 'bg-gradient-to-r from-[#000000] to-[#1a1a1a] text-white hover:shadow-lg hover:scale-105'
                     }`}
                   >
-                    次へ →
+                    次へ
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
                   </button>
                 </div>
               )}
@@ -133,7 +159,7 @@ export default function Home() {
 
           {/* Sidebar */}
           <aside className="w-full lg:w-64 flex-shrink-0">
-            <div className="lg:sticky lg:top-4">
+            <div className="lg:sticky lg:top-28">
               <Sidebar />
             </div>
           </aside>

@@ -27,10 +27,10 @@ export default function PostNavigation({ prev, next }: PostNavigationProps) {
                 className="w-20 h-20 object-cover rounded"
               />
               <div className="flex-1">
-                <h3 className="text-gray-900 font-semibold line-clamp-2 group-hover:text-pink-600 transition">
+                <h3 className="text-gray-900 font-semibold line-clamp-2 group-hover:text-black transition">
                   {prev.title}
                 </h3>
-                <p className="text-sm text-pink-600 mt-1 font-semibold">{prev.actress}</p>
+                <p className="text-sm text-black mt-1 font-semibold">{prev.actress}</p>
               </div>
             </div>
           </Link>
@@ -54,10 +54,10 @@ export default function PostNavigation({ prev, next }: PostNavigationProps) {
             </div>
             <div className="flex gap-4">
               <div className="flex-1 text-right">
-                <h3 className="text-gray-900 font-semibold line-clamp-2 group-hover:text-pink-600 transition">
+                <h3 className="text-gray-900 font-semibold line-clamp-2 group-hover:text-black transition">
                   {next.title}
                 </h3>
-                <p className="text-sm text-pink-600 mt-1 font-semibold">{next.actress}</p>
+                <p className="text-sm text-black mt-1 font-semibold">{next.actress}</p>
               </div>
               <img
                 src={next.thumbnail}

@@ -19,7 +19,7 @@ export default function PostCard({ post }: PostCardProps) {
           />
           {/* Image Count */}
           <div className="absolute bottom-2 right-2">
-            <span className="bg-pink-600 text-white text-xs font-semibold px-2 py-1 rounded">
+            <span className="bg-black text-white text-xs font-semibold px-2 py-1 rounded">
               📷 {post.images.length}枚
             </span>
           </div>
@@ -28,16 +28,16 @@ export default function PostCard({ post }: PostCardProps) {
         {/* Content */}
         <div className="p-4 flex-1">
           <div className="mb-2">
-            <span className="inline-block bg-pink-100 text-pink-700 text-xs font-semibold px-3 py-1 rounded-full">
+            <span className="inline-block bg-silver text-black text-xs font-semibold px-3 py-1 rounded-full">
               {post.category}
             </span>
           </div>
 
-          <h2 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-pink-600 transition-colors">
+          <h2 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-black transition-colors">
             {post.title}
           </h2>
 
-          <p className="text-pink-600 font-semibold text-lg mb-2">{post.actress}</p>
+          <p className="text-black font-semibold text-lg mb-2">{post.actress}</p>
 
           <p className="text-gray-600 text-sm mb-3 line-clamp-2">{post.excerpt}</p>
 
@@ -52,7 +52,7 @@ export default function PostCard({ post }: PostCardProps) {
             </time>
             <div className="flex gap-2">
               {post.tags.slice(0, 2).map((tag, index) => (
-                <span key={index} className="text-pink-600">
+                <span key={index} className="text-black">
                   #{tag}
                 </span>
               ))}

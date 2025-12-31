@@ -44,7 +44,7 @@ export default function Pagination({ currentPage, totalPages, basePath = '' }: P
       {currentPage > 1 ? (
         <Link
           href={getPageUrl(currentPage - 1)}
-          className="px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-pink-500 transition"
+          className="px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-pearl0 transition"
         >
           ← 前へ
         </Link>
@@ -74,7 +74,7 @@ export default function Pagination({ currentPage, totalPages, basePath = '' }: P
               href={getPageUrl(pageNum)}
               className={`px-4 py-2 rounded-lg font-semibold transition ${
                 isActive
-                  ? 'bg-pink-500 text-white'
+                  ? 'bg-pearl0 text-white'
                   : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
               }`}
               aria-current={isActive ? 'page' : undefined}
@@ -89,7 +89,7 @@ export default function Pagination({ currentPage, totalPages, basePath = '' }: P
       {currentPage < totalPages ? (
         <Link
           href={getPageUrl(currentPage + 1)}
-          className="px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-pink-500 transition"
+          className="px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-pearl0 transition"
         >
           次へ →
         </Link>

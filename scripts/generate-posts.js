@@ -1,18 +1,154 @@
-const fs = require('fs')
-const path = require('path')
+const { S3Client, ListObjectsV2Command } = require('@aws-sdk/client-s3')
 
 // R2のベースURL
 const R2_URL = 'https://pub-38a5803166a44a668002f313b530f97f.r2.dev'
 
-function generatePosts() {
-  console.log('🚀 Generating posts from actress metadata...')
+// 環境変数から設定を取得
+const R2_ACCOUNT_ID = process.env.R2_ACCOUNT_ID
+const R2_ACCESS_KEY_ID = process.env.R2_ACCESS_KEY_ID
+const R2_SECRET_ACCESS_KEY = process.env.R2_SECRET_ACCESS_KEY
+const R2_BUCKET_NAME = process.env.R2_BUCKET_NAME || 'adult-pic-media'
+
+/**
+ * R2クライアントの初期化
+ */
+function createR2Client() {
+  if (!R2_ACCOUNT_ID || !R2_ACCESS_KEY_ID || !R2_SECRET_ACCESS_KEY) {
+    console.warn('⚠️  R2 credentials not found. Falling back to JSON files.')
+    return null
+  }
+
+  return new S3Client({
+    region: 'auto',
+    endpoint: `https://${R2_ACCOUNT_ID}.r2.cloudflarestorage.com`,
+    credentials: {
+      accessKeyId: R2_ACCESS_KEY_ID,
+      secretAccessKey: R2_SECRET_ACCESS_KEY,
+    },
+  })
+}
+
+/**
+ * R2から指定プレフィックスのオブジェクト一覧を取得
+ */
+async function listR2Objects(client, prefix = '') {
+  const command = new ListObjectsV2Command({
+    Bucket: R2_BUCKET_NAME,
+    Prefix: prefix,
+    Delimiter: '/',
+  })
+
+  try {
+    const response = await client.send(command)
+    return {
+      folders: (response.CommonPrefixes || []).map(p => p.Prefix),
+      files: (response.Contents || []).map(f => f.Key),
+    }
+  } catch (error) {
+    console.error(`❌ Error listing R2 objects with prefix "${prefix}":`, error.message)
+    return { folders: [], files: [] }
+  }
+}
+
+/**
+ * R2のフォルダ構造をスキャンして記事データを生成
+ */
+async function scanR2Structure(client) {
+  console.log('🔍 Scanning R2 folder structure...')
+
+  const posts = []
+  let postId = 1
+
+  // ルート直下のカテゴリフォルダを取得
+  const rootResult = await listR2Objects(client, '')
+  const categoryFolders = rootResult.folders
+
+  if (categoryFolders.length === 0) {
+    console.warn('⚠️  No category folders found in R2')
+    return posts
+  }
+
+  console.log(`📁 Found ${categoryFolders.length} category folders`)
+
+  // 各カテゴリフォルダを処理
+  for (const categoryFolder of categoryFolders) {
+    // カテゴリ名を取得（女優A/ → 女優A）
+    const categoryName = categoryFolder.replace(/\/$/, '')
+
+    // カテゴリ配下の記事フォルダを取得
+    const articlesResult = await listR2Objects(client, categoryFolder)
+    const articleFolders = articlesResult.folders
+
+    console.log(`  📂 Category: ${categoryName} (${articleFolders.length} articles)`)
+
+    // 各記事フォルダを処理
+    for (const articleFolder of articleFolders) {
+      // 記事名を取得（actresses/女優A/記事001/ → 記事001）
+      const articleName = articleFolder.replace(categoryFolder, '').replace(/\/$/, '')
+
+      // 記事フォルダ内の画像を取得
+      const imagesResult = await listR2Objects(client, articleFolder)
+      const imageFiles = imagesResult.files.filter(f =>
+        f.match(/\.(jpg|jpeg|png|webp|gif)$/i)
+      )
+
+      if (imageFiles.length === 0) {
+        console.warn(`    ⚠️  No images found in ${articleFolder}`)
+        continue
+      }
+
+      // 画像URLを生成
+      const images = imageFiles.map(file => `${R2_URL}/${file}`)
+      const thumbnail = images[0]
+
+      // スラッグを生成（フォルダ名から）
+      const slug = articleFolder
+        .replace(/\//g, '-')
+        .replace(/-$/, '')
+        .toLowerCase()
+
+      posts.push({
+        id: postId++,
+        slug: slug,
+        title: articleName,
+        actress: categoryName,
+        category: categoryName,
+        thumbnail: thumbnail,
+        images: images,
+        date: new Date().toISOString().split('T')[0],
+        excerpt: `${categoryName}の${articleName}です。${imageFiles.length}枚の写真をお楽しみください。`,
+        tags: [categoryName, articleName],
+        popularity: 50,
+      })
+
+      console.log(`    ✓ ${articleName} (${imageFiles.length} images)`)
+    }
+  }
+
+  return posts
+}
+
+/**
+ * JSONファイルから記事を生成（フォールバック）
+ */
+function generateFromJSON() {
+  const fs = require('fs')
+  const path = require('path')
+
+  console.log('📄 Generating posts from JSON files...')
 
   const actressDir = path.join(__dirname, '../data/actresses')
+
+  if (!fs.existsSync(actressDir)) {
+    console.warn('⚠️  No data/actresses/ directory found')
+    return []
+  }
+
   const files = fs.readdirSync(actressDir).filter(f => f.endsWith('.json'))
 
   if (files.length === 0) {
     console.warn('⚠️  No actress metadata files found in data/actresses/')
-    return
+    return []
   }
 
   const posts = []
@@ -23,13 +159,11 @@ function generatePosts() {
     const data = JSON.parse(fs.readFileSync(filePath, 'utf8'))
 
     // 画像URLを自動生成
+    // folderフィールドは "カテゴリ/記事名" の形式を想定
     const images = []
     for (let i = 1; i <= data.imageCount; i++) {
-      images.push(`${R2_URL}/actresses/${data.folder}/${i}.jpg`)
+      images.push(`${R2_URL}/${data.folder}/${i}.jpg`)
     }
-
-    // 最初の画像をサムネイルに
-    const thumbnail = images[0]
 
     posts.push({
       id: postId++,
@@ -37,16 +171,26 @@ function generatePosts() {
       title: data.title,
       actress: data.name,
       category: data.category,
-      thumbnail: thumbnail,
+      thumbnail: images[0],
       images: images,
       date: data.date,
       excerpt: data.excerpt,
       tags: data.tags,
-      popularity: data.popularity || 50
+      popularity: data.popularity || 50,
     })
 
     console.log(`  ✓ Generated post: ${data.name} (${images.length} images)`)
   })
+
+  return posts
+}
+
+/**
+ * posts.tsファイルを生成
+ */
+function generatePostsFile(posts) {
+  const fs = require('fs')
+  const path = require('path')
 
   // 人気順にソート（高い順）
   posts.sort((a, b) => b.popularity - a.popularity)
@@ -112,10 +256,39 @@ export function getAllCategories(): string[] {
   console.log(`📊 Total images: ${posts.reduce((sum, p) => sum + p.images.length, 0)}`)
 }
 
+/**
+ * メイン処理
+ */
+async function main() {
+  console.log('🚀 Starting post generation...\n')
+
+  let posts = []
+
+  // R2スキャンを試行
+  const client = createR2Client()
+
+  if (client) {
+    console.log('📡 Using R2 API to scan folder structure...')
+    posts = await scanR2Structure(client)
+  }
+
+  // R2スキャンで記事が見つからない場合はJSONフォールバック
+  if (posts.length === 0) {
+    console.log('\n⚠️  No posts found in R2, falling back to JSON files...')
+    posts = generateFromJSON()
+  }
+
+  if (posts.length === 0) {
+    console.error('\n❌ No posts generated. Please check your R2 setup or JSON files.')
+    process.exit(1)
+  }
+
+  // posts.tsを生成
+  generatePostsFile(posts)
+}
+
 // 実行
-try {
-  generatePosts()
-} catch (error) {
+main().catch(error => {
   console.error('❌ Error generating posts:', error)
   process.exit(1)
-}
+})

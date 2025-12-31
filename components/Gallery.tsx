@@ -72,7 +72,7 @@ export default function Gallery() {
             onClick={() => setFilter(cat)}
             className={`px-4 py-2 rounded-lg transition ${
               filter === cat
-                ? 'bg-pink-500 text-white'
+                ? 'bg-pearl0 text-white'
                 : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
             }`}
           >

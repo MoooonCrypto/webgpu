@@ -62,7 +62,7 @@ export default function DMCAPage() {
               </div>
               <button
                 type="submit"
-                className="bg-pink-500 hover:bg-pink-600 px-6 py-3 rounded font-semibold transition"
+                className="bg-pearl0 hover:bg-black px-6 py-3 rounded font-semibold transition"
               >
                 Submit Request
               </button>

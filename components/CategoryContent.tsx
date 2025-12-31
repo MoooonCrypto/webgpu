@@ -38,7 +38,7 @@ export default function CategoryContent({ categoryPosts }: CategoryContentProps)
                 className={`px-4 py-2 rounded-lg transition ${
                   currentPage === 1
                     ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                    : 'bg-pink-600 text-white hover:bg-pink-700'
+                    : 'bg-black text-white hover:bg-charcoal'
                 }`}
               >
                 ← 前へ
@@ -63,7 +63,7 @@ export default function CategoryContent({ categoryPosts }: CategoryContentProps)
                       onClick={() => setCurrentPage(page)}
                       className={`px-4 py-2 rounded-lg font-semibold transition ${
                         page === currentPage
-                          ? 'bg-pink-600 text-white'
+                          ? 'bg-black text-white'
                           : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-100'
                       }`}
                     >
@@ -80,7 +80,7 @@ export default function CategoryContent({ categoryPosts }: CategoryContentProps)
                 className={`px-4 py-2 rounded-lg transition ${
                   currentPage === totalPages
                     ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                    : 'bg-pink-600 text-white hover:bg-pink-700'
+                    : 'bg-black text-white hover:bg-charcoal'
                 }`}
               >
                 次へ →
