@@ -2,7 +2,6 @@
 
 import Link from 'next/link'
 import { Post } from '@/types/Post'
-import { useState } from 'react'
 
 interface EncyclopediaCardProps {
   post: Post
@@ -10,8 +9,6 @@ interface EncyclopediaCardProps {
 }
 
 export default function EncyclopediaCard({ post, priority = false }: EncyclopediaCardProps) {
-  const [imageLoaded, setImageLoaded] = useState(false)
-
   return (
     <Link href={`/posts/${post.slug}`}>
       <article className="group relative aspect-[3/4] overflow-hidden rounded-2xl transition-all duration-500 hover:scale-[1.02]">
@@ -24,6 +21,7 @@ export default function EncyclopediaCard({ post, priority = false }: Encyclopedi
             src={post.thumbnail}
             alt={post.title}
             className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:brightness-110"
+            loading={priority ? "eager" : "lazy"}
           />
 
           {/* Multi-layer Gradient Overlay */}
