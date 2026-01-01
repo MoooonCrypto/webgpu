@@ -2,11 +2,11 @@
 
 import Link from 'next/link'
 import { useState } from 'react'
-import { posts, getAllCategories } from '@/data/posts'
+import { posts, getCategorySlugMap } from '@/data/posts'
 
 export default function Sidebar() {
   const [searchQuery, setSearchQuery] = useState('')
-  const categories = getAllCategories()
+  const categoryMap = getCategorySlugMap()
 
   // 女優名のユニークリストを取得
   const actresses = Array.from(new Set(posts.map(post => post.actress))).sort()
@@ -53,15 +53,15 @@ export default function Sidebar() {
               <span className="text-xs bg-white/20 px-2 py-0.5 rounded-full">{posts.length}</span>
             </Link>
           </li>
-          {categories.map(category => {
-            const count = posts.filter(p => p.category === category).length
+          {Object.entries(categoryMap).map(([categorySlug, categoryName]) => {
+            const count = posts.filter(p => p.categorySlug === categorySlug).length
             return (
-              <li key={category}>
+              <li key={categorySlug}>
                 <Link
-                  href={`/?category=${category}`}
+                  href={`/category/${categorySlug}`}
                   className="group flex items-center justify-between px-3 py-2.5 rounded-lg text-gray hover:bg-white/60 hover:text-[#000000] font-medium text-sm transition-all duration-200"
                 >
-                  <span>{category}</span>
+                  <span>{categoryName}</span>
                   <span className="text-xs text-gray/60 group-hover:text-[#000000]/80">{count}</span>
                 </Link>
               </li>

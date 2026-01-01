@@ -7,7 +7,7 @@ import Footer from '@/components/Footer'
 import Sidebar from '@/components/Sidebar'
 import EncyclopediaCard from '@/components/EncyclopediaCard'
 import ScrollToTop from '@/components/ScrollToTop'
-import { posts, getAllCategories } from '@/data/posts'
+import { posts, getCategorySlugMap } from '@/data/posts'
 
 export default function Home() {
   const [currentPage, setCurrentPage] = useState(1)
@@ -19,10 +19,11 @@ export default function Home() {
   const paginatedPosts = posts.slice(startIndex, startIndex + postsPerPage)
 
   // カテゴリー別の投稿（各カテゴリー6件まで表示）
-  const categories = getAllCategories()
-  const categoryPosts = categories.map(category => ({
-    category,
-    posts: posts.filter(p => p.category === category).slice(0, 6)
+  const categoryMap = getCategorySlugMap()
+  const categoryPosts = Object.entries(categoryMap).map(([categorySlug, categoryName]) => ({
+    categorySlug,
+    category: categoryName,
+    posts: posts.filter(p => p.categorySlug === categorySlug).slice(0, 6)
   }))
 
   return (
@@ -34,9 +35,9 @@ export default function Home() {
           {/* Main Content */}
           <main className="flex-1">
             {/* Category Sections */}
-            {categoryPosts.map(({ category, posts: categoryPostsList }, idx) => (
+            {categoryPosts.map(({ categorySlug, category, posts: categoryPostsList }, idx) => (
               <section
-                key={category}
+                key={categorySlug}
                 className="mb-16 animate-fadeInUp opacity-0"
                 style={{ animationDelay: `${0.1 + idx * 0.05}s` }}
               >
@@ -48,7 +49,7 @@ export default function Home() {
                     <div className="h-1 w-20 bg-gradient-to-r from-[#000000] to-[#2d2d2d] rounded-full"></div>
                   </div>
                   <Link
-                    href={`/category/${encodeURIComponent(category)}`}
+                    href={`/category/${categorySlug}`}
                     className="group relative inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-[#000000] to-[#1a1a1a] text-white font-semibold text-sm shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
                   >
                     もっと見る

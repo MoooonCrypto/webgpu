@@ -51,17 +51,30 @@ async function listR2Objects(client, prefix = '') {
 }
 
 /**
+ * 文字列からハッシュを生成（簡易版）
+ */
+function generateHash(str) {
+  let hash = 0
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i)
+    hash = ((hash << 5) - hash) + char
+    hash = hash & hash // Convert to 32bit integer
+  }
+  return Math.abs(hash).toString(36)
+}
+
+/**
  * R2のフォルダ構造をスキャンして記事データを生成
  */
 async function scanR2Structure(client) {
   console.log('🔍 Scanning R2 folder structure...')
 
   const posts = []
-  let postId = 1
+  const categorySlugMap = {}
 
   // ルート直下のカテゴリフォルダを取得
   const rootResult = await listR2Objects(client, '')
-  const categoryFolders = rootResult.folders
+  const categoryFolders = rootResult.folders.sort() // ソートして一貫性を保つ
 
   if (categoryFolders.length === 0) {
     console.warn('⚠️  No category folders found in R2')
@@ -74,16 +87,19 @@ async function scanR2Structure(client) {
   for (const categoryFolder of categoryFolders) {
     // カテゴリ名を取得（女優A/ → 女優A）
     const categoryName = categoryFolder.replace(/\/$/, '')
+    // カテゴリslugをフォルダ名のハッシュから生成（一貫性を保つ）
+    const categorySlug = `cat-${generateHash(categoryName)}`
+    categorySlugMap[categorySlug] = categoryName
 
     // カテゴリ配下の記事フォルダを取得
     const articlesResult = await listR2Objects(client, categoryFolder)
-    const articleFolders = articlesResult.folders
+    const articleFolders = articlesResult.folders.sort() // ソートして一貫性を保つ
 
     console.log(`  📂 Category: ${categoryName} (${articleFolders.length} articles)`)
 
     // 各記事フォルダを処理
     for (const articleFolder of articleFolders) {
-      // 記事名を取得（actresses/女優A/記事001/ → 記事001）
+      // 記事名を取得（女優A/記事001/ → 記事001）
       const articleName = articleFolder.replace(categoryFolder, '').replace(/\/$/, '')
 
       // 記事フォルダ内の画像を取得
@@ -97,22 +113,21 @@ async function scanR2Structure(client) {
         continue
       }
 
-      // 画像URLを生成
-      const images = imageFiles.map(file => `${R2_URL}/${file}`)
+      // 画像URLを生成（ファイル名順にソート）
+      const images = imageFiles.sort().map(file => `${R2_URL}/${file}`)
       const thumbnail = images[0]
 
-      // スラッグを生成（フォルダ名から）
-      const slug = articleFolder
-        .replace(/\//g, '-')
-        .replace(/-$/, '')
-        .toLowerCase()
+      // スラッグを記事フォルダパスのハッシュから生成（一貫性を保つ）
+      // 例: 与田祐希/与田祐希シリーズA/ → post-abc123
+      const slug = `post-${generateHash(articleFolder)}`
 
       posts.push({
-        id: postId++,
+        id: 0, // 後でソート後に振り直す
         slug: slug,
         title: articleName,
         actress: categoryName,
         category: categoryName,
+        categorySlug: categorySlug,
         thumbnail: thumbnail,
         images: images,
         date: new Date().toISOString().split('T')[0],
@@ -124,6 +139,14 @@ async function scanR2Structure(client) {
       console.log(`    ✓ ${articleName} (${imageFiles.length} images)`)
     }
   }
+
+  // slugでソートして一貫性のある順序にする
+  posts.sort((a, b) => a.slug.localeCompare(b.slug))
+
+  // IDを振り直す（1から連番）
+  posts.forEach((post, index) => {
+    post.id = index + 1
+  })
 
   return posts
 }
@@ -246,6 +269,20 @@ export function getAdjacentPosts(currentId: number): {
 export function getAllCategories(): string[] {
   const categories = new Set(posts.map(post => post.category))
   return Array.from(categories)
+}
+
+export function getCategorySlugMap(): Record<string, string> {
+  const map: Record<string, string> = {}
+  posts.forEach(post => {
+    if (!map[post.categorySlug]) {
+      map[post.categorySlug] = post.category
+    }
+  })
+  return map
+}
+
+export function getPostsByCategorySlug(categorySlug: string): Post[] {
+  return posts.filter(post => post.categorySlug === categorySlug)
 }
 `
 

@@ -60,7 +60,7 @@ export default function PostPage({ params }: PostPageProps) {
         <div className="mb-8 animate-fadeInUp opacity-0">
           <Breadcrumb
             items={[
-              { label: post.category, href: `/?category=${post.category}` },
+              { label: post.category, href: `/category/${post.categorySlug}` },
               { label: post.title },
             ]}
           />

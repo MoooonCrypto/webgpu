@@ -4,7 +4,7 @@ import Footer from '@/components/Footer'
 import Sidebar from '@/components/Sidebar'
 import CategoryContent from '@/components/CategoryContent'
 import ScrollToTop from '@/components/ScrollToTop'
-import { posts, getAllCategories } from '@/data/posts'
+import { getCategorySlugMap, getPostsByCategorySlug } from '@/data/posts'
 
 interface CategoryPageProps {
   params: { slug: string }
@@ -12,17 +12,19 @@ interface CategoryPageProps {
 
 // 静的パス生成
 export async function generateStaticParams() {
-  const categories = getAllCategories()
-  return categories.map((category) => ({
-    slug: encodeURIComponent(category),
+  const categoryMap = getCategorySlugMap()
+  return Object.keys(categoryMap).map((categorySlug) => ({
+    slug: categorySlug,
   }))
 }
 
 export default function CategoryPage({ params }: CategoryPageProps) {
-  const category = decodeURIComponent(params.slug)
+  const categorySlug = params.slug
+  const categoryMap = getCategorySlugMap()
+  const category = categoryMap[categorySlug]
 
-  // カテゴリーでフィルタリング
-  const categoryPosts = posts.filter(p => p.category === category)
+  // カテゴリーslugでフィルタリング
+  const categoryPosts = getPostsByCategorySlug(categorySlug)
 
   return (
     <div className="min-h-screen flex flex-col relative">

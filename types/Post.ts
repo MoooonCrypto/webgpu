@@ -4,6 +4,7 @@ export interface Post {
   title: string
   actress: string
   category: string
+  categorySlug: string
   thumbnail: string
   images: string[]
   date: string
