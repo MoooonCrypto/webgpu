@@ -60,7 +60,7 @@ export default function Home() {
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 sm:gap-6">
                   {categoryPostsList.map(post => (
-                    <EncyclopediaCard key={post.id} post={post} />
+                    <EncyclopediaCard key={post.id} post={post} priority={idx < 2} />
                   ))}
                 </div>
               </section>
@@ -85,8 +85,12 @@ export default function Home() {
 
               {/* Posts Grid */}
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 sm:gap-6 mb-12">
-                {paginatedPosts.map(post => (
-                  <EncyclopediaCard key={post.id} post={post} />
+                {paginatedPosts.map((post, index) => (
+                  <EncyclopediaCard
+                    key={post.id}
+                    post={post}
+                    priority={currentPage === 1 && index < 18}
+                  />
                 ))}
               </div>
 

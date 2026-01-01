@@ -6,9 +6,10 @@ import { useState } from 'react'
 
 interface EncyclopediaCardProps {
   post: Post
+  priority?: boolean  // ファーストビューの画像に true を渡す
 }
 
-export default function EncyclopediaCard({ post }: EncyclopediaCardProps) {
+export default function EncyclopediaCard({ post, priority = false }: EncyclopediaCardProps) {
   const [imageLoaded, setImageLoaded] = useState(false)
 
   return (
@@ -25,7 +26,7 @@ export default function EncyclopediaCard({ post }: EncyclopediaCardProps) {
               alt={post.title}
               className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:brightness-110"
               onLoad={() => setImageLoaded(true)}
-              loading="lazy"
+              loading={priority ? "eager" : "lazy"}
             />
           </div>
 

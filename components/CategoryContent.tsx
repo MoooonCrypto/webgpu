@@ -23,8 +23,12 @@ export default function CategoryContent({ categoryPosts }: CategoryContentProps)
       {categoryPosts.length > 0 ? (
         <>
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-10">
-            {paginatedPosts.map(post => (
-              <EncyclopediaCard key={post.id} post={post} />
+            {paginatedPosts.map((post, index) => (
+              <EncyclopediaCard
+                key={post.id}
+                post={post}
+                priority={currentPage === 1 && index < 18}
+              />
             ))}
           </div>
 
