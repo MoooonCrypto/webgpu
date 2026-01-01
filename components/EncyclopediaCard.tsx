@@ -20,20 +20,11 @@ export default function EncyclopediaCard({ post, priority = false }: Encyclopedi
 
         {/* Background Image */}
         <div className="absolute inset-0">
-          <div className={`w-full h-full transition-opacity duration-700 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}>
-            <img
-              src={post.thumbnail}
-              alt={post.title}
-              className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:brightness-110"
-              onLoad={() => setImageLoaded(true)}
-              loading={priority ? "eager" : "lazy"}
-            />
-          </div>
-
-          {/* Shimmer Loading Effect */}
-          {!imageLoaded && (
-            <div className="absolute inset-0 bg-gradient-to-r from-[#f5f5f5] via-[#e5e5e5] to-[#f5f5f5] animate-pulse"></div>
-          )}
+          <img
+            src={post.thumbnail}
+            alt={post.title}
+            className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:brightness-110"
+          />
 
           {/* Multi-layer Gradient Overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
