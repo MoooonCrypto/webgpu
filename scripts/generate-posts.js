@@ -114,7 +114,12 @@ async function scanR2Structure(client) {
       }
 
       // 画像URLを生成（ファイル名順にソート）
-      const images = imageFiles.sort().map(file => `${R2_URL}/${file}`)
+      // 各パス要素を個別にエンコードして日本語フォルダ名に対応
+      const images = imageFiles.sort().map(file => {
+        const parts = file.split('/')
+        const encodedParts = parts.map(part => encodeURIComponent(part))
+        return `${R2_URL}/${encodedParts.join('/')}`
+      })
       const thumbnail = images[0]
 
       // スラッグを記事フォルダパスのハッシュから生成（一貫性を保つ）
@@ -184,8 +189,10 @@ function generateFromJSON() {
     // 画像URLを自動生成
     // folderフィールドは "カテゴリ/記事名" の形式を想定
     const images = []
+    const folderParts = data.folder.split('/')
+    const encodedFolder = folderParts.map(part => encodeURIComponent(part)).join('/')
     for (let i = 1; i <= data.imageCount; i++) {
-      images.push(`${R2_URL}/${data.folder}/${i}.jpg`)
+      images.push(`${R2_URL}/${encodedFolder}/${encodeURIComponent(`${i}.jpg`)}`)
     }
 
     posts.push({
