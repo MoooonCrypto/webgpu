@@ -83,13 +83,12 @@ async function scanR2Structure(client) {
 
   console.log(`📁 Found ${categoryFolders.length} category folders`)
 
-  // 各カテゴリフォルダを処理
-  for (const categoryFolder of categoryFolders) {
+  // 各カテゴリフォルダを並列処理
+  const categoryPromises = categoryFolders.map(async (categoryFolder) => {
     // カテゴリ名を取得（女優A/ → 女優A）
     const categoryName = categoryFolder.replace(/\/$/, '')
     // カテゴリslugをフォルダ名のハッシュから生成（一貫性を保つ）
     const categorySlug = `cat-${generateHash(categoryName)}`
-    categorySlugMap[categorySlug] = categoryName
 
     // カテゴリ配下の記事フォルダを取得
     const articlesResult = await listR2Objects(client, categoryFolder)
@@ -97,8 +96,8 @@ async function scanR2Structure(client) {
 
     console.log(`  📂 Category: ${categoryName} (${articleFolders.length} articles)`)
 
-    // 各記事フォルダを処理
-    for (const articleFolder of articleFolders) {
+    // 各記事フォルダを並列処理
+    const articlePromises = articleFolders.map(async (articleFolder) => {
       // 記事名を取得（女優A/記事001/ → 記事001）
       const articleName = articleFolder.replace(categoryFolder, '').replace(/\/$/, '')
 
@@ -110,7 +109,7 @@ async function scanR2Structure(client) {
 
       if (imageFiles.length === 0) {
         console.warn(`    ⚠️  No images found in ${articleFolder}`)
-        continue
+        return null // スキップ
       }
 
       // 画像URLを生成（ファイル名順にソート）
@@ -126,7 +125,9 @@ async function scanR2Structure(client) {
       // 例: 与田祐希/与田祐希シリーズA/ → post-abc123
       const slug = `post-${generateHash(articleFolder)}`
 
-      posts.push({
+      console.log(`    ✓ ${articleName} (${imageFiles.length} images)`)
+
+      return {
         id: 0, // 後でソート後に振り直す
         slug: slug,
         title: articleName,
@@ -139,11 +140,24 @@ async function scanR2Structure(client) {
         excerpt: `${categoryName}の${articleName}です。${imageFiles.length}枚の写真をお楽しみください。`,
         tags: [categoryName, articleName],
         popularity: 50,
-      })
+      }
+    })
 
-      console.log(`    ✓ ${articleName} (${imageFiles.length} images)`)
-    }
-  }
+    const articleResults = await Promise.all(articlePromises)
+
+    // categorySlugMapに追加
+    categorySlugMap[categorySlug] = categoryName
+
+    // nullを除外して返す
+    return articleResults.filter(result => result !== null)
+  })
+
+  const allCategoryResults = await Promise.all(categoryPromises)
+
+  // 全カテゴリの記事を平坦化してpostsに追加
+  allCategoryResults.forEach(categoryPosts => {
+    posts.push(...categoryPosts)
+  })
 
   // slugでソートして一貫性のある順序にする
   posts.sort((a, b) => a.slug.localeCompare(b.slug))
