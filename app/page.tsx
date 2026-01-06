@@ -12,8 +12,8 @@ import { posts, getCategorySlugMap } from '@/data/posts'
 export default function Home() {
   const [currentPage, setCurrentPage] = useState(1)
   const [categoryPages, setCategoryPages] = useState<Record<string, number>>({})
-  const postsPerPage = 120 // 6列 × 20行
-  const categoryPostsPerPage = 30 // カテゴリごとのページネーション
+  const postsPerPage = 90 // 6列 × 15行
+  const categoryPostsPerPage = 12 // カテゴリごとのページネーション（6列 × 2行）
 
   // ページネーション
   const totalPages = Math.ceil(posts.length / postsPerPage)
