@@ -9,13 +9,13 @@ export const posts: Post[] = [
     "title": "美麗グラビア Vol.1",
     "actress": "サンプル女優A",
     "category": "グラビア",
-    "thumbnail": "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actresses/actress-001/1.jpg",
+    "thumbnail": "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actress-001/1.jpg",
     "images": [
-      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actresses/actress-001/1.jpg",
-      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actresses/actress-001/2.jpg",
-      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actresses/actress-001/3.jpg",
-      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actresses/actress-001/4.jpg",
-      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actresses/actress-001/5.jpg"
+      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actress-001/1.jpg",
+      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actress-001/2.jpg",
+      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actress-001/3.jpg",
+      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actress-001/4.jpg",
+      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actress-001/5.jpg"
     ],
     "date": "2024-01-15",
     "excerpt": "最新グラビア撮影の美麗な写真をお届けします。",
@@ -32,13 +32,13 @@ export const posts: Post[] = [
     "title": "テストグラビア撮影 Vol.1",
     "actress": "テスト女優A",
     "category": "グラビア",
-    "thumbnail": "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actresses/test-actress-001/1.jpg",
+    "thumbnail": "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/test-actress-001/1.jpg",
     "images": [
-      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actresses/test-actress-001/1.jpg",
-      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actresses/test-actress-001/2.jpg",
-      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actresses/test-actress-001/3.jpg",
-      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actresses/test-actress-001/4.jpg",
-      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actresses/test-actress-001/5.jpg"
+      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/test-actress-001/1.jpg",
+      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/test-actress-001/2.jpg",
+      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/test-actress-001/3.jpg",
+      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/test-actress-001/4.jpg",
+      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/test-actress-001/5.jpg"
     ],
     "date": "2025-01-15",
     "excerpt": "R2画像連携テスト用のサンプル投稿です。実際の運用と同じ形式で画像を表示しています。",
@@ -55,14 +55,14 @@ export const posts: Post[] = [
     "title": "清楚系グラビア Vol.3",
     "actress": "サンプル女優C",
     "category": "グラビア",
-    "thumbnail": "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actresses/actress-003/1.jpg",
+    "thumbnail": "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actress-003/1.jpg",
     "images": [
-      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actresses/actress-003/1.jpg",
-      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actresses/actress-003/2.jpg",
-      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actresses/actress-003/3.jpg",
-      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actresses/actress-003/4.jpg",
-      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actresses/actress-003/5.jpg",
-      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actresses/actress-003/6.jpg"
+      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actress-003/1.jpg",
+      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actress-003/2.jpg",
+      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actress-003/3.jpg",
+      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actress-003/4.jpg",
+      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actress-003/5.jpg",
+      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actress-003/6.jpg"
     ],
     "date": "2024-01-13",
     "excerpt": "清楚な雰囲気が魅力的なグラビア撮影。",
@@ -78,12 +78,12 @@ export const posts: Post[] = [
     "title": "夏の水着特集 Vol.2",
     "actress": "サンプル女優B",
     "category": "水着",
-    "thumbnail": "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actresses/actress-002/1.jpg",
+    "thumbnail": "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actress-002/1.jpg",
     "images": [
-      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actresses/actress-002/1.jpg",
-      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actresses/actress-002/2.jpg",
-      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actresses/actress-002/3.jpg",
-      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actresses/actress-002/4.jpg"
+      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actress-002/1.jpg",
+      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actress-002/2.jpg",
+      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actress-002/3.jpg",
+      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actress-002/4.jpg"
     ],
     "date": "2024-01-14",
     "excerpt": "夏の海辺で撮影された水着グラビア。",
@@ -100,10 +100,10 @@ export const posts: Post[] = [
     "title": "女優A① 舞台写真集",
     "actress": "女優A①",
     "category": "舞台女優",
-    "thumbnail": "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actresses/actress-stage-001/1.jpg",
+    "thumbnail": "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actress-stage-001/1.jpg",
     "images": [
-      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actresses/actress-stage-001/1.jpg",
-      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actresses/actress-stage-001/2.jpg"
+      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actress-stage-001/1.jpg",
+      "https://pub-38a5803166a44a668002f313b530f97f.r2.dev/actress-stage-001/2.jpg"
     ],
     "date": "2025-01-16",
     "excerpt": "女優A①の舞台公演写真です。",
@@ -159,4 +159,18 @@ export function getAdjacentPosts(currentId: number): {
 export function getAllCategories(): string[] {
   const categories = new Set(posts.map(post => post.category))
   return Array.from(categories)
+}
+
+export function getCategorySlugMap(): Record<string, string> {
+  const map: Record<string, string> = {}
+  posts.forEach(post => {
+    if (!map[post.categorySlug]) {
+      map[post.categorySlug] = post.category
+    }
+  })
+  return map
+}
+
+export function getPostsByCategorySlug(categorySlug: string): Post[] {
+  return posts.filter(post => post.categorySlug === categorySlug)
 }

@@ -8,11 +8,19 @@ import Sidebar from '@/components/Sidebar'
 import EncyclopediaCard from '@/components/EncyclopediaCard'
 import ScrollToTop from '@/components/ScrollToTop'
 import { posts, getCategorySlugMap } from '@/data/posts'
+import { Post } from '@/types/Post'
 
 export default function Home() {
   const [currentPage, setCurrentPage] = useState(1)
   const [categoryPages, setCategoryPages] = useState<Record<string, number>>({})
-  const [displayedCategories, setDisplayedCategories] = useState<any[]>([])
+  const [displayedCategories, setDisplayedCategories] = useState<{
+    categorySlug: string
+    category: string
+    posts: Post[]
+    totalPosts: number
+    currentPage: number
+    totalPages: number
+  }[]>([])
   const postsPerPage = 90 // 6列 × 15行
   const categoryPostsPerPage = 12 // カテゴリごとのページネーション（6列 × 2行）
   const maxCategoriesOnHome = 30 // トップページに表示する最大カテゴリ数
