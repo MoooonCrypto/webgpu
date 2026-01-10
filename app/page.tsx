@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
@@ -12,8 +12,10 @@ import { posts, getCategorySlugMap } from '@/data/posts'
 export default function Home() {
   const [currentPage, setCurrentPage] = useState(1)
   const [categoryPages, setCategoryPages] = useState<Record<string, number>>({})
+  const [displayedCategories, setDisplayedCategories] = useState<any[]>([])
   const postsPerPage = 90 // 6列 × 15行
   const categoryPostsPerPage = 12 // カテゴリごとのページネーション（6列 × 2行）
+  const maxCategoriesOnHome = 30 // トップページに表示する最大カテゴリ数
 
   // ページネーション
   const totalPages = Math.ceil(posts.length / postsPerPage)
@@ -28,22 +30,28 @@ export default function Home() {
 
   // カテゴリー別の投稿（ページネーション対応）
   const categoryMap = getCategorySlugMap()
-  const categoryPosts = Object.entries(categoryMap).map(([categorySlug, categoryName]) => {
-    const allCategoryPosts = posts.filter(p => p.categorySlug === categorySlug)
+  const allCategoryPosts = Object.entries(categoryMap).map(([categorySlug, categoryName]) => {
+    const allCategoryPostsList = posts.filter(p => p.categorySlug === categorySlug)
     const currentCategoryPage = getCategoryPage(categorySlug)
-    const totalCategoryPages = Math.ceil(allCategoryPosts.length / categoryPostsPerPage)
+    const totalCategoryPages = Math.ceil(allCategoryPostsList.length / categoryPostsPerPage)
     const startIdx = (currentCategoryPage - 1) * categoryPostsPerPage
-    const paginatedCategoryPosts = allCategoryPosts.slice(startIdx, startIdx + categoryPostsPerPage)
+    const paginatedCategoryPosts = allCategoryPostsList.slice(startIdx, startIdx + categoryPostsPerPage)
 
     return {
       categorySlug,
       category: categoryName,
       posts: paginatedCategoryPosts,
-      totalPosts: allCategoryPosts.length,
+      totalPosts: allCategoryPostsList.length,
       currentPage: currentCategoryPage,
       totalPages: totalCategoryPages
     }
   })
+
+  // 初回レンダリング時にランダムに30カテゴリを選択
+  useEffect(() => {
+    const shuffled = [...allCategoryPosts].sort(() => Math.random() - 0.5)
+    setDisplayedCategories(shuffled.slice(0, maxCategoriesOnHome))
+  }, [])
 
   return (
     <div className="min-h-screen flex flex-col relative">
@@ -149,7 +157,7 @@ export default function Home() {
             </section>
 
             {/* Category Sections */}
-            {categoryPosts.map(({ categorySlug, category, posts: categoryPostsList, totalPosts, currentPage: catPage, totalPages: catTotalPages }, idx) => (
+            {displayedCategories.map(({ categorySlug, category, posts: categoryPostsList, totalPosts, currentPage: catPage, totalPages: catTotalPages }, idx) => (
               <section
                 key={categorySlug}
                 className="mb-16 animate-fadeInUp opacity-0"
